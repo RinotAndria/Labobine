@@ -16,8 +16,8 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh 'sleep 10' # Attendre que l'application démarre
-                sh 'curl -f http://localhost:3000 || exit 1' # Vérifier que le serveur répond
+                sh 'sleep 10' // Attendre que l'application démarre
+                sh 'curl -f http://localhost:3000 || exit 1' // Vérifier que le serveur répond
             }
         }
         stage('Deploy') {
