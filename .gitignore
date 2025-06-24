@@ -1,4 +1,16 @@
+# macOS
+.DS_Store
+*/.DS_Store
+
 # Node.js
+node_modules/
+npm-debug.log
+
+# Environnement
+server/.env
+
+# Docker
+*.log# Node.js
 node_modules/
 npm-debug.log
 
