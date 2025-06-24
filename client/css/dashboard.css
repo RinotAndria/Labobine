@@ -1,0 +1,82 @@
+.main-container {
+  background-color: #FFFFFF;
+  border: 4px solid #808080; /* Contour gris en mode clair */
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] .main-container {
+  background-color: #000000; /* Plateforme noire en mode sombre */
+  border: 4px solid #808080; /* Contour gris maintenu */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+header {
+  background-color: #FFD700;
+  border-bottom: 1px solid #FFD700;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] header {
+  background-color: #808080; /* Header gris en mode sombre */
+  border-bottom: 1px solid #808080;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Texte devenant blanc pour les descriptions en mode sombre */
+[data-theme="dark"] #movieResult p,
+[data-theme="dark"] #savedMovies p,
+[data-theme="dark"] #savedMovies span,
+[data-theme="dark"] #userReviews p,
+[data-theme="dark"] #movieResult h3 {
+  color: #FFFFFF !important;
+}
+
+/* Titres fixes en jaune */
+.title-section {
+  color: #FFD700 !important;
+}
+
+/* Cartes de Vos films enregistrés avec fond blanc en mode clair */
+#savedMovies .movie-card {
+  background-color: #FFFFFF;
+}
+
+[data-theme="dark"] #savedMovies .movie-card {
+  background-color: #000000; /* Fond noir en mode sombre */
+}
+
+/* Texte des cartes de Vos films enregistrés en noir en mode clair */
+#savedMovies .movie-card p,
+#savedMovies .movie-card span {
+  color: #000000;
+}
+
+[data-theme="dark"] #savedMovies .movie-card p,
+[data-theme="dark"] #savedMovies .movie-card span {
+  color: #FFFFFF; /* Texte blanc en mode sombre pour contraste */
+}
+
+/* Texte des cartes de films : noir en mode clair, jaune en mode sombre */
+.movie-card p {
+  color: #000000;
+}
+
+[data-theme="dark"] .movie-card p {
+  color: #FFD700;
+}
+
+/* Texte "Bienvenue, [nom]" en bleu en mode clair, jaune en mode sombre */
+header h1 {
+  color: #1E90FF; /* Bleu en mode clair */
+}
+
+[data-theme="dark"] header h1 {
+  color: #FFD700; /* Jaune en mode sombre */
+}
+
+/* Ajustement de la grille pour occuper toute la largeur */
+#movieResult .grid {
+  width: 100%;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Ajuste automatiquement les colonnes */
+}

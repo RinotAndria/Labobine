@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connexion - La Bobine</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="./css/global.css">
+  <link rel="stylesheet" href="./css/index.css">
+</head>
+<body>
+  <div id="app" data-theme="light">
+    <header class="py-2 px-4 flex justify-between items-center shadow-lg animate-slide-in">
+      <div class="flex items-center">
+        <img src="icon.png" alt="La Bobine" class="h-12 mr-3">
+        <!-- Suppression du <h1>La Bobine</h1> -->
+      </div>
+      <button id="themeToggle" class="btn-secondary px-4 py-2 rounded-lg text-sm">Mode Sombre</button>
+    </header>
+    <main class="flex-grow flex items-center justify-center p-6">
+      <div class="main-container p-6 rounded-xl border border-[#FFD700] w-full max-w-md shadow-xl animate-zoom-in">
+        <h2 class="text-lg font-semibold mb-4 text-center text-[#1E90FF]">Connexion</h2>
+        <form id="loginForm" class="space-y-4">
+          <div>
+            <label class="block mb-1 text-sm text-[#DC143C]" for="loginEmail">Email</label>
+            <input type="email" id="loginEmail" class="w-full p-2 input-field rounded-lg text-sm" placeholder="Entrez votre email" required>
+          </div>
+          <div>
+            <label class="block mb-1 text-sm text-[#DC143C]" for="loginPassword">Mot de passe</label>
+            <input type="password" id="loginPassword" class="w-full p-2 input-field rounded-lg text-sm" placeholder="Entrez votre mot de passe" required>
+          </div>
+          <button type="submit" class="w-full btn-primary px-6 py-2 rounded-lg text-sm">Se connecter</button>
+        </form>
+        <p class="mt-4 text-center text-sm text-[#DC143C]">Pas de compte ? <a href="#" id="showRegister" class="hover:underline">Inscrivez-vous</a></p>
+
+        <!-- Formulaire d’inscription -->
+        <form id="registerForm" class="space-y-4 hidden">
+          <h2 class="text-lg font-semibold mb-4 text-center text-[#1E90FF]">Inscription</h2>
+          <div>
+            <label class="block mb-1 text-sm text-[#DC143C]" for="registerUsername">Nom d’utilisateur</label>
+            <input type="text" id="registerUsername" class="w-full p-2 input-field rounded-lg text-sm" placeholder="Entrez votre nom d’utilisateur" required>
+          </div>
+          <div>
+            <label class="block mb-1 text-sm text-[#DC143C]" for="registerEmail">Email</label>
+            <input type="email" id="registerEmail" class="w-full p-2 input-field rounded-lg text-sm" placeholder="Entrez votre email" required>
+          </div>
+          <div>
+            <label class="block mb-1 text-sm text-[#DC143C]" for="registerPassword">Mot de passe</label>
+            <input type="password" id="registerPassword" class="w-full p-2 input-field rounded-lg text-sm" placeholder="Entrez votre mot de passe" required>
+          </div>
+          <button type="submit" class="w-full btn-primary px-6 py-2 rounded-lg text-sm">S’inscrire</button>
+          <p class="mt-4 text-center text-sm text-[#DC143C]">Déjà un compte ? <a href="#" id="showLogin" class="hover:underline">Connectez-vous</a></p>
+        </form>
+      </div>
+    </main>
+    <!-- Ajout de la bannière avec ID -->
+    <div class="w-full mt-4">
+      <img id="banner" src="./images/banner.jpg" alt="Présentation de La Bobine" class="w-full h-auto max-h-48 object-cover">
+    </div>
+  </div>
+
+  <script>
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    const showRegister = document.getElementById('showRegister');
+    const showLogin = document.getElementById('showLogin');
+    const themeToggle = document.getElementById('themeToggle');
+    const app = document.getElementById('app');
+    const body = document.body;
+    const banner = document.getElementById('banner');
+
+    showRegister.addEventListener('click', (e) => {
+      e.preventDefault();
+      loginForm.classList.add('hidden');
+      registerForm.classList.remove('hidden');
+    });
+
+    showLogin.addEventListener('click', (e) => {
+      e.preventDefault();
+      registerForm.classList.add('hidden');
+      loginForm.classList.remove('hidden');
+    });
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+
+      try {
+        const response = await fetch('http://localhost:3000/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+        const data = await response.json();
+        if (response.ok) {
+          localStorage.setItem('username', data.username);
+          localStorage.setItem('userId', data.userId);
+          window.location.href = data.redirect;
+        } else {
+          alert(data.message);
+        }
+      } catch (error) {
+        console.error('Erreur lors de la connexion:', error);
+        alert('Erreur lors de la connexion');
+      }
+    });
+
+    registerForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const username = document.getElementById('registerUsername').value;
+      const email = document.getElementById('registerEmail').value;
+      const password = document.getElementById('registerPassword').value;
+
+      try {
+        const response = await fetch('http://localhost:3000/api/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, email, password })
+        });
+        const data = await response.json();
+        if (response.ok) {
+          alert(data.message);
+          registerForm.classList.add('hidden');
+          loginForm.classList.remove('hidden');
+        } else {
+          alert(data.message);
+        }
+      } catch (error) {
+        console.error('Erreur lors de l’inscription:', error);
+        alert('Erreur lors de l’inscription');
+      }
+    });
+
+    // Gestion du mode sombre/clair avec changement de bannière
+    themeToggle.addEventListener('click', () => {
+      const isDark = app.getAttribute('data-theme') === 'dark';
+      app.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      themeToggle.textContent = isDark ? 'Mode Sombre' : 'Mode Clair';
+      body.classList.toggle('dark-mode', !isDark); // Forcer le fond
+      banner.src = isDark ? './images/banner.jpg' : './images/bannerN.jpg'; // Changer la bannière
+      console.log('Mode actuel:', app.getAttribute('data-theme'), 'Bannière:', banner.src); // Débogage
+    });
+  </script>
+</body>
+</html>
