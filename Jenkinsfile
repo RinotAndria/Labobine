@@ -26,7 +26,8 @@ pipeline {
         stage('Test') {
             steps {
                 // Remplace l'URL interne 'app:3000' par l'URL exposée
-                sh "curl -f http://localhost:3001 || exit 1"
+                sh 'docker-compose -f ${DOCKER_COMPOSE_FILE} exec -T app curl -f http://localhost:3000 || exit 1'
+
             }
         }
 
