@@ -14,10 +14,15 @@ pipeline {
                 sh 'docker-compose -f ${DOCKER_COMPOSE_FILE} build'
             }
         }
+        stage('Start Containers') {
+            steps {
+                sh 'docker-compose -f ${DOCKER_COMPOSE_FILE} up -d'
+                sh 'sleep 10' // Attendre que les conteneurs démarrent
+            }
+        }
         stage('Test') {
             steps {
-                sh 'sleep 10' // Attendre que l'application démarre
-                sh 'curl -f http://localhost:3000 || exit 1' // Vérifier que le serveur répond
+                sh 'curl -f http://app:3000 || exit 1' // Utiliser le nom du service 'app'
             }
         }
         stage('Deploy') {
@@ -30,6 +35,7 @@ pipeline {
     post {
         always {
             sh 'docker-compose -f ${DOCKER_COMPOSE_FILE} logs'
+            sh 'docker-compose -f ${DOCKER_COMPOSE_FILE} down'
         }
         failure {
             echo 'Le pipeline a échoué. Vérifiez les logs.'
